@@ -1,34 +1,39 @@
-const DomElement = function() {
-    const text = document.querySelector('.text').value;
-    const selector = document.querySelector('.selector').value;
-    const height = document.querySelector('.height').value;
-    const width = document.querySelector('.width').value;
-    const bg = document.querySelector('.bg').value;
-    const fontsize = document.querySelector('.fontsize').value;
-    createElements = function() {
-        if (selector[0] === '.') {
-            let elem =  document.createElement('div');
-            console.log(elem);
-            document.body.appendChild(elem);
-            elem.classList.add(selector);
-            elem.style.height = height + 'px';
-            elem.style.width = width + 'px';
-            elem.style.backgroundColor = bg;
-            elem.style.fontSize = fontsize + 'px';
-        } else if(selector[0] === '#') {
-            let elem =  document.createElement('div');
-            document.body.appendChild(elem);
-            elem.setAttribute('id', selector);
-            elem.innerHTML = text;
-            console.log(elem);
-            elem.style.fontSize = fontsize + 'px';
-            elem.style.backgroundColor = bg;
-        }
+document.addEventListener('DOMContentLoaded', function() {
+    const DomElement = function(selector, height, width, bg, fontsize) {
+        this.selector = selector;
+        this.height = height;
+        this.width = width;
+        this.bg = bg;
+        this.fontsize = fontsize;
+        this.createElements();
     };
-    createElements();
-};
+    DomElement.prototype.createElements = function(selector, height, width, bg, fontsize) {
+         if (this.selector[0] === '.') {
+             this.elem = document.createElement('div');
+            this.elem.className = this.selector.substring(1);
+        } else if(this.selector[0] === '#') {
+            this.elem = document.createElement('p');
+            this.elem.id = this.selector.substring(1);
+        }
+        this.elem.style.cssText = `height: ${this.height}px; width: ${this.width}px; background:
+        ${this.bg}; font-size: ${this.fontSize}px;`;
+        console.log(this.height);
+        document.body.append(this.elem);
+     };
+    
+    DomElement.prototype.createText = function (text) {
+        this.elem.textContent = text;
+        console.log(this.elem);
+    };
+    
+    let someElem = new DomElement('.div', 200, 300, 'green', 23);
+    someElem.createElements();
+    someElem.createText('Ехал Грека через реку');
+    
+    let someElem2 = new DomElement('#paragraph', 200, 500, 'yellow', 53);
+    someElem2.createElements();
+    someElem2.createText('Видит Грека - в реке рак');
+});
 
-button = document.querySelector('.button');
 
-const domElement2 = new DomElement();
-button.addEventListener('click', DomElement);
+
